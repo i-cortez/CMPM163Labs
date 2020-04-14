@@ -1,63 +1,70 @@
 <!DOCTYPE html>
+<!--
+   part1.html
+
+   Ismael Cortez (ijcortez@ucsc)
+   Dated 4-13-2020
+   Lab 2: Intro to Three.js Part 1
+
+   Adapted from:
+   Three.js Documentation
+   - https://threejs.org/docs/#manual/en/introduction/Creating-a-scene
+   Ch 1 examples from "Learning Three.js" by Jos Dirksen
+-->
 <html>
    <head>
       <meta charset="utf-8">
-      <title>Lab 2: Intro to Three.js Part 1</title>
-      <script type="text/javascript" src="../three.js-master/build/three.js">
-      </script>
+      <title>
+         Lab 2: Intro to Three.js Part 1
+      </title>
       <style>
-         body
-         {
-            margin: 0;
-            overflow: hidden;
-         }
+         body { margin: 0; }
+         canvas { display: block; }
       </style>
    </head>
    <body>
-      <div id="WebGL-output"></div>
-      <script type="text/javascript">
-
-      function init()
-      {
+      <script type="text/javascript" src="../three.js-master/build/three.js">
+      </script>
+      <script>
          // Start with a scene
          var scene = new THREE.Scene();
 
          // Next create a camera
          // Accepts 4 constructor parameters: (vertical field of view,
          // aspect ratio, near clipping plane, far clipping plane)
-         var camera = new THREE.PerspectiveCamera(45, 
-            window.innerWidth/window.innerHeight, 0.1, 1000);
+         var camera = new THREE.PerspectiveCamera(75,
+         window.innerWidth/window.innerHeight, 0.1, 1000);
 
          // Set up the WebGLRenderer
          var renderer = new THREE.WebGLRenderer();
-         // Sets the background color
-         renderer.setClearColor(new THREE.Color(0xC0C0C0, 1.0));
-         // Sets the display size
          renderer.setSize(window.innerWidth, window.innerHeight);
-         
+         document.body.appendChild(renderer.domElement);
 
          //---------------------------------------------------------------------
          // AXES
          //---------------------------------------------------------------------
          //
-         var axes = new THREE.AxisHelper(20);
-         scene.add(axes);
+         // Show axes in the window
+         // var axes = new THREE.AxisHelper(20);
+         // scene.add(axes);
 
-         //---------------------------------------------------------------------
+          //---------------------------------------------------------------------
          // PLANE
          //---------------------------------------------------------------------
          //
          // Set up the geometry, marerial, and mesh of a ground plane
-         var planeGeometry = new THREE.PlaneGeometry(60, 20, 1, 1);
-         var planeMaterial = new Three.MeshBasicMaterial({color: 0xffffff});
+         // create the ground plane
+         var planeGeometry = new THREE.PlaneGeometry(60, 20);
+         var planeMaterial = new THREE.MeshBasicMaterial({color: 0x3d4849});
          var plane = new THREE.Mesh(planeGeometry, planeMaterial);
-         // plane.receiveShadow = true;
 
-         // Position the plane
+         // Rotate and position the plane
          plane.rotation.x = -0.5 * Math.PI;
-         plane.position.x = 15;
+         plane.position.x = 10;
          plane.position.y = 0;
          plane.position.z = 0;
+         
+         // Add the plane to the scene
          scene.add(plane);
 
          //---------------------------------------------------------------------
@@ -68,36 +75,37 @@
          // Takes six constructor parameters: (width WRT X axis, height WRT Y
          // axis, depth WRT Z axis, # of segmented faces WRT X axis,
          // # of segmented faces WRT Y axis, # of segmented faces WRT Z axis)
-         var geometry = new THREE.BoxGeometry(5, 5, 5, 1, 1, 1);
-         var geometry_a = new THREE.BoxGeometry(5, 5, 5, 1, 1, 1);
-         var geometry_b = new THREE.BoxGeometry(5, 5, 5, 1, 1, 1);
-
-         // Choose material and color
-         var material = new THREE.MeshBasicMaterial({color: 0x00ff80,
+         //
+         // First Cube
+         var geometry = new THREE.BoxGeometry(5, 5, 5, 2, 2, 2);
+         var material = new THREE.MeshBasicMaterial ({color: 0x00ff80, 
             wireframe: true});
-         var material_a = new THREE.MeshBasicMaterial({color: 0x00ffff, 
-            wireframe: true});
-         var material_b = new THREE.MeshBasicMaterial({color: 0xff0000,
-            wireframe: true});
-            
-         // Takes two constructor parameters: (geometry, material)
          var cube = new THREE.Mesh(geometry, material);
+
+         // Position the First Cube and add to scene
+         cube.position.x = 20;
+         cube.position.y = 6;
+         cube.position.z = 0;
+         scene.add(cube);
+
+         // Second Cube
+         var geometry_a = new THREE.BoxGeometry(2, 2, 2);
+         var material_a = new THREE.MeshBasicMaterial ({color: 0x00ffff});
          var cube_a = new THREE.Mesh(geometry_a, material_a);
+
+         // Position the Second Cube and add to scene
+         cube_a.position.x = -8;
+         cube_a.position.y = 3;
+         cube_a.position.z = 0;
+         scene.add(cube_a);
+
+         // Third Cube
+         var geometry_b = new THREE.BoxGeometry(3, 3, 3);
+         var material_b = new THREE.MeshBasicMaterial ({color: 0xff0000});
          var cube_b = new THREE.Mesh(geometry_b, material_b);
 
-         // Enable shadows for all three cubes
-         //cube.castShadow = true;
-         //cube_a.castShadow = true;
-         //cube_b.castShadow = true;
-
-         // Position the cubes
-         cube.posotion.x = -4;
-         cube.position.y = 3;
-         cube.position.z = 0;
-
-         // Adds the cubes to the scene
-         scene.add(cube);
-         scene.add(cube_a);
+         // Position the Third Cube and add to scene
+         cube_b.position.y = 16;
          scene.add(cube_b);
 
          //---------------------------------------------------------------------
@@ -105,35 +113,40 @@
          //---------------------------------------------------------------------
          //
          // Position the camera as desired
-         camera.position.x = -30;
-         camera.positioni.y = 40;
-         camera.position.z = 30; // This moves the camera toward the viewer
+         var loop = 0;
+         camera.position.x = -20;
+         camera.position.y = 30;
+         camera.position.z = 20;
+         camera.lookAt(scene.position);
 
-         // animate();
-
-         //---------------------------------------------------------------------
-         // ANIMATIONS
-         //---------------------------------------------------------------------
-         //
-         // Create a loop that instructs the renderer to draw the scene
-         /*function animate()
+         var animate = function()
          {
-            cube.rotation.x += 0.01;
-            cube.rotation.y += 0.01;
-            cube_a.rotation.z += 0.01;
-            cube_b.rotation.x += 0.01;
-            cube_b.rotation.z += 0.01;
+            // Animation for First Cube
+            // will rotate in place
+            cube.rotateX(0.01);
+            cube.rotateY(0.01);
+
+            // Loop is to be used for Second and Third Cube animations
+            loop += 0.02;
+
+            // Second Cube animation
+            // will jump back and forth
+            cube_a.position.x = (10 * (Math.cos(loop)));
+            cube_a.position.y = 2 + (8 * Math.abs(Math.sin(loop)));
+
+            // Third Cube animation
+            // will rotate around a fixed point on the y-z plane
+            // and its x axis
+            cube_b.position.z = (8 * (Math.cos(loop)));
+            cube_b.position.y = 10 + (8 * (Math.sin(loop)));
+            cube_b.rotation.x += 0.02;
+            
+
             requestAnimationFrame(animate);
             renderer.render (scene, camera);
-         } */
+         };
 
-         // Add the renderer element to the HTML page
-         document.getElementById("WebGL-output").appendChild( 
-            renderer.domElement);
-
-         renderer.render(scene, camera);
-      }
-      window.onload = init;
+         animate();
       </script>
    </body>
 </html>
