@@ -11,30 +11,71 @@
       </style>
    </head>
    <body>
+      <div id="WebGL-output"></div>
       <script src="../three.js-master/build/three.js"></script>
-      <script>
+      <script type="text/javascript">
+
+      function init()
+      {
+         // Start with a scene
          var scene = new THREE.Scene();
+
+         // Next create a camera
+         // Accepts 4 constructor parameters: (vertical field of view,
+         // aspect ratio, near clipping plane, far clipping plane)
          var camera = new THREE.PerspectiveCamera(75,
-         window.innerWidth/window.innerHeight, 0.1, 1000);
-         var renderer = new THREE.WebGLRenderer();
+         window.innerWidth/window.innerHeight, 1, 10000);
+
+         // Set up the WebGLRenderer
+         var renderer = new THREE.WebGLRenderer({antialias: true});
+         // Sets the display size
          renderer.setSize(window.innerWidth, window.innerHeight);
+         // Add the renderer element to the HTML page
          document.body.appendChild(renderer.domElement);
 
-         var geometry = new THREE.BoxGeometry();
-         var material = new THREE.MeshBasicMaterial ({color: 0x00ff00});
-         var cube = new THREE.Mesh(geometry, material);
-         scene.add(cube);
-         camera.position.z = 5; // This moves the camera toward the viewer
+         // Set up the geometry of the cube
+         // Takes six constructor parameters: (width WRT X axis, height WRT Y
+         // axis, depth WRT Z axis, # of segmented faces WRT X axis,
+         // # of segmented faces WRT Y axis, # of segmented faces WRT Z axis)
+         var geometry = new THREE.BoxGeometry(500, 500, 500, 10, 10, 10);
+         var geometry_a = new THREE.BoxGeometry(250, 250, 250, 5, 5, 5);
+         var geometry_b = new THREE.BoxGeometry(125, 125, 125);
 
+         // Color the object using a material
+         var material = new THREE.MeshBasicMaterial ({color: 0x00ff80,
+            wireframe: true});
+         var material_a = new THREE.MeshBasicMaterial({color: 0x00ffff, 
+            wireframe: true});
+         var material_b = new THREE.MeshBasicMaterial({color: 0xff0000,
+            wireframe: true});
+            
+         // Takes two constructor parameters: (geometry, material)
+         var cube = new THREE.Mesh(geometry, material);
+         var cube_a = new THREE.Mesh(geometry_a, material_a);
+         var cube_b = new THREE.Mesh(geometry_b, material_b);
+
+         // Adds the cube to the coordinates (0,0,0).
+         scene.add(cube);
+         scene.add(cube_a);
+         scene.add(cube_b);
+         camera.position.z = 1000; // This moves the camera toward the viewer
+
+         // Create a loop that instructs the renderer to draw the scene
          var animate = function ()
          {
             requestAnimationFrame(animate);
             cube.rotation.x += 0.01;
             cube.rotation.y += 0.01;
+            cube_a.rotation.z += 0.01;
+            cube_b.rotation.x += 0.01;
+            cube_b.rotation.z += 0.01;
             renderer.render (scene, camera);
          };
 
          animate();
+      }
+
+      window.onload = init;
       </script>
    </body>
 </html>
