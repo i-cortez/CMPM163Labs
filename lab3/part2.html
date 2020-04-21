@@ -1,0 +1,341 @@
+<!--
+   part1.html
+   Ismael Cortez (ijcortez@ucsc)
+   Dated 4-13-2020
+   Lab 3: Shaders in Three.js
+   Adapted from:
+      Vertex manipulation - cjgammon
+      http://blog.cjgammon.com/threejs-custom-shader-material
+-->
+<!DOCTYPE html>
+<html>
+   <head>
+      <meta charset="utf-8">
+      <title>
+         Lab 3: Shaders in Three.js
+      </title>
+      <style>
+         body { margin: 0; }
+         canvas { display: block; }
+      </style>
+   </head>
+   <body>
+      <script type="text/javascript" src="../three.js-master/build/three.js">
+      </script>
+      <script>
+         // Start with a scene
+         var scene = new THREE.Scene();
+
+         //---------------------------------------------------------------------
+         // CAMERA
+         //---------------------------------------------------------------------
+         //
+         // Accepts 4 constructor parameters: (vertical field of view,
+         // aspect ratio, near clipping plane, far clipping plane)
+         var camera = new THREE.PerspectiveCamera(75,
+         window.innerWidth/window.innerHeight, 0.1, 1000);
+         camera.position.x = -20;
+         camera.position.y = 30;
+         camera.position.z = 20;
+         camera.lookAt(scene.position);
+
+         // Set up the WebGLRenderer
+         var renderer = new THREE.WebGLRenderer();
+         renderer.setSize(window.innerWidth, window.innerHeight);
+         renderer.shadowMapEnabled = true;
+         renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+         document.body.appendChild(renderer.domElement);
+
+         //---------------------------------------------------------------------
+         // SHADERS
+         //---------------------------------------------------------------------
+         // Initialize variables to load shaders
+         THREE.Cache.enabled = true;
+         var count = 0;
+         var loader = new THREE.FileLoader();
+         var fshader, vshader, fshader1, vshader1;
+
+         // Load in the vertex shaders
+         loader.load
+         (
+            'shaders/vertexShader.vert', 
+            // onLoad callback
+            function(data)
+            {
+               console.log(data); // Output the text to the console
+               vshader = data;
+               count += 1;
+               addCoolCube();
+            },
+            // onProgress callback
+            function(xhr)
+            {
+               console.log((xhr.loaded/xhr.total * 100) + '% loaded');
+            },
+            // onError callback
+            function(err)
+            {
+               console.error('An error happened');
+            }
+         );
+         
+         // Load in the fragment shader
+         loader.load
+         (
+            'shaders/fragmentShader.frag', 
+            function(data)
+            {
+               console.log(data); // Output the text to the console
+               fshader = data;
+               count += 1;
+               addCoolCube();
+            },
+            // onProgress callback
+            function(xhr)
+            {
+               console.log((xhr.loaded/xhr.total * 100) + '% loaded');
+            },
+            // onError callback
+            function(err)
+            {
+               console.error('An error happened');
+            }
+         );
+
+         loader.load
+         (
+            'shaders/vertexShader1.vert', 
+            // onLoad callback
+            function(data)
+            {
+               console.log(data); // Output the text to the console
+               vshader1 = data;
+               count += 1;
+               addMessyCube();
+            },
+            // onProgress callback
+            function(xhr)
+            {
+               console.log((xhr.loaded/xhr.total * 100) + '% loaded');
+            },
+            // onError callback
+            function(err)
+            {
+               console.error('An error happened');
+            }
+         );
+         
+         // Load in the fragment shader
+         loader.load
+         (
+            'shaders/fragmentShader1.frag', 
+            function(data)
+            {
+               console.log(data); // Output the text to the console
+               fshader1 = data;
+               count += 1;
+               addMessyCube();
+            },
+            // onProgress callback
+            function(xhr)
+            {
+               console.log((xhr.loaded/xhr.total * 100) + '% loaded');
+            },
+            // onError callback
+            function(err)
+            {
+               console.error('An error happened');
+            }
+         );
+
+         //---------------------------------------------------------------------
+         // AXES
+         //---------------------------------------------------------------------
+         //
+         // Show axes in the window
+         //var axes = new THREE.AxesHelper(20);
+         //scene.add(axes);
+
+          //---------------------------------------------------------------------
+         // GEOMETRY
+         //---------------------------------------------------------------------
+         // Set up the geometry, marerial, and mesh of a ground plane
+         // create the ground plane
+         var planeGeometry = new THREE.PlaneGeometry(60, 20, 10, 10);
+         var planeMaterial = new THREE.MeshLambertMaterial
+         (
+            {
+               color: 0xe0dfdb
+            }
+         );
+         var plane = new THREE.Mesh(planeGeometry, planeMaterial);
+         plane.receiveShadow = true;
+
+         // Rotate and position the plane
+         plane.rotation.x = -0.5 * Math.PI;
+         plane.position.x = 10;
+         plane.position.y = 0;
+         plane.position.z = 0;
+
+         scene.add(plane);
+
+         // Set up the geometry of the Torus
+         var torusGeometry = new THREE.TorusGeometry(6, 1, 16, 100);
+         var torusMaterial = new THREE.MeshNormalMaterial
+         (
+            {
+               transparent: true, 
+               opacity: 0.75
+            }
+         );
+         var torusMesh = new THREE.Mesh(torusGeometry, torusMaterial);
+         torusMesh.position.set(2, 10, 0);
+         torusMesh.rotation.y = 0.5 * Math.PI;
+         scene.add(torusMesh);
+
+         // Set up the geometry of the cube
+         // Takes six constructor parameters: (width WRT X axis, height WRT Y
+         // axis, depth WRT Z axis, # of segmented faces WRT X axis,
+         // # of segmented faces WRT Y axis, # of segmented faces WRT Z axis)
+         //
+         // First Cube
+         var geometry = new THREE.BoxGeometry(5, 5, 5, 2, 2, 2);
+         var material = new THREE.MeshPhongMaterial ({color: 0x008080, 
+            specular: 0x00ff80, shininess: 40});
+         var cube = new THREE.Mesh(geometry, material);
+         // cube.castShadow = true;
+
+         // Position the First Cube and add to scene
+         cube.position.x = 20;
+         cube.position.y = 6;
+         cube.position.z = 0;
+         scene.add(cube);
+
+         // Second Cube
+         var geometry2 = new THREE.BoxGeometry(2, 2, 2);
+         var material2 = new THREE.MeshLambertMaterial ({color: 0x00ffff});
+         var cube2 = new THREE.Mesh(geometry2, material2);
+         cube2.castShadow = true;
+
+         // Position the Second Cube and add to scene
+         cube2.position.x = -3;
+         cube2.position.y = 3;
+         cube2.position.z = 0;
+         scene.add(cube2);
+
+         // Third cube
+         var geometry3, material3, cube3;
+         function addCoolCube()
+         {
+            if(count == 2)
+            {
+               let uniforms =
+               {
+                  colorB: {type: 'vec3', value: new THREE.Color(0xacb6e5)},
+                  colorA: {type: 'vec3', value: new THREE.Color(0x74ebd5)}
+               };
+
+               geometry3 = new THREE.BoxGeometry(4, 4, 4);
+               material3 = new THREE.ShaderMaterial
+               (
+                  {
+                     uniforms: uniforms,
+                     fragmentShader: fshader,
+                     vertexShader: vshader,
+                     precision: "mediump"
+                  }
+               );
+               cube3 = new THREE.Mesh(geometry3, material3);
+               cube3.position.set(-15, 5, -5);
+               scene.add(cube3);
+            }
+         }
+
+         // Fourth cube
+         var geometry4, material4, cube4;
+         function addMessyCube()
+         {
+            if(count == 4)
+            {
+               var uniforms =
+               {
+                  delta: {value: 0}
+               };
+               geometry4 = new THREE.BoxBufferGeometry(4, 4, 4, 10, 10, 10);
+               material4 = new THREE.ShaderMaterial
+               (
+                  {
+                     uniforms: uniforms, 
+                     fragmentShader: fshader1,
+                     vertexShader: vshader1,
+                  }
+               );
+               cube4 = new THREE.Mesh(geometry4, material4);
+               cube4.position.set(-15, 5, 8);
+               scene.add(cube4);
+
+               var vertexDisplacement = new Float32Array
+               (
+                  geometry4.attributes.position.count
+               );
+               for(var i = 0; i < vertexDisplacement.length; i += 1)
+               {
+                  vertexDisplacement[i] = Math.sin(i);
+               }
+               geometry4.setAttribute
+               (
+                  'vertexDisplacement', 
+                  new THREE.BufferAttribute(vertexDisplacement, 1)
+               );
+            }
+         }
+
+         //---------------------------------------------------------------------
+         // LIGHTS
+         //---------------------------------------------------------------------
+         //
+         var plight = new THREE.PointLight(0xfff1e0, 1, 1000, 2);
+         plight.position.set(20, 10, 0);
+         plight.castShadow = true;
+         scene.add(plight);
+
+         var alight = new THREE.AmbientLight(0xfff1e0, 0.5, 1000, 2);
+         scene.add(alight);
+
+         var loop = 0;
+
+         var animate = function()
+         {
+            // cube animation
+            cube.rotation.x += 0.01;
+            cube.rotation.z += 0.01;
+
+            // Loop is to be used for cube2
+            loop += 0.02;
+
+            // cube2 animation
+            cube2.position.x = (8 * (Math.cos(loop)));
+            cube2.position.y = 2 + (8 * Math.abs(Math.sin(loop)));
+
+            // cube3 animation
+            if(geometry3)
+            {
+               geometry3.rotateX(0.01);
+               geometry3.rotateY(0.01);
+            }
+
+            // cube 4 animation
+            if(geometry4)
+            {
+               geometry4.rotateX(0.01);
+               geometry4.rotateZ(0.01);
+            }
+
+            requestAnimationFrame(animate);
+            renderer.render (scene, camera);
+         };
+
+         animate();
+      </script>
+   </body>
+</html>
