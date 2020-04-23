@@ -1,0 +1,116 @@
+<!--
+   part1.html
+
+   Ismael Cortez (ijcortez@)
+   Dated 4-22-2020
+   Lab 4: Textures & Normal Maps
+-->
+<!DOCTYPE html>
+<html>
+   <head>
+		<meta charset="utf-8">
+		<title>Lab 4: Textures & Normal Maps</title>
+		<style>
+			body { margin: 0; }
+			canvas { display: block; }
+		</style>
+	</head>
+	<body>
+      <script type="text/javascript" src="../three.js-master/build/three.js">
+      </script>
+		<script>
+         // setup the scene
+         var scene = new THREE.Scene();
+         var camera = new THREE.PerspectiveCamera
+         (
+            75, // vertical FOV
+            window.innerWidth/window.innerHeight, // aspect ratio
+            0.1, // near clipping plane
+            1000 // far clipping plane
+         );
+         var renderer = new THREE.WebGLRenderer({antialias: true});
+         renderer.setSize(window.innerWidth, window.innerHeight);
+         document.body.appendChild(renderer.domElement);
+         camera.position.z = 8;
+         camera.position.y = 2;
+
+         // uncomment to show axes
+         //var axes = new THREE.AxesHelper(20);
+         //scene.add(axes);
+
+         // add the textures
+         var texture = THREE.ImageUtils.loadTexture("199.jpg");
+         var texture2 = THREE.ImageUtils.loadTexture("176.jpg");
+         var texture3 = THREE.ImageUtils.loadTexture("161b.jpg");
+
+         // add the normal maps
+         var normMap = THREE.ImageUtils.loadTexture("199_norm.jpg");
+         var normMap2 = THREE.ImageUtils.loadTexture("176_norm.jpg");
+         var normMap3 = THREE.ImageUtils.loadTexture("161_norm.jpg");
+         
+         // geometry and material
+         var geometry = new THREE.BoxGeometry();
+         var material = new THREE.MeshPhongMaterial({map: texture});
+         var material2 = new THREE.MeshPhongMaterial
+         (
+            {
+               map: texture, 
+               normalMap: normMap
+            }
+         );
+         var material3 = new THREE.MeshPhongMaterial
+         (
+            {
+               map: texture2, 
+               normMap: normMap2
+            }
+         );
+         var material4 = new THREE.MeshPhongMaterial
+         (
+            {
+               map: texture3, 
+               normMap3: normMap3
+            }
+         );
+
+         // first cube
+         var cube = new THREE.Mesh(geometry, material);
+         scene.add(cube);
+         cube.position.set(2, 0, 0);
+
+         // second cube
+         var cube2 = new THREE.Mesh(geometry, material2);
+         scene.add(cube2);
+         cube2.position.set(-2, 0, 0);
+
+         // third cube
+         var cube3 = new THREE.Mesh(geometry, material4);
+         scene.add(cube3);
+         cube3.position.set(0, 0, 2);
+
+         // fourth cube
+         var cube4 = new THREE.Mesh(geometry, material3);
+         scene.add(cube4);
+         cube4.position.set(0, 0 , -2);
+         
+         // add the light
+         var light = new THREE.PointLight(0xffffff, 1, 100, 2);
+         light.position.set(10, 10, 10);
+         scene.add(light);
+         
+         // for circle animation
+         loop = 0;
+
+         function animate()
+         {
+            // the light will rotate around a fixed point on the x-z plane
+            loop += 0.01;
+            light.position.x = 10 * Math.cos(loop);
+            light.position.z = 10 * Math.sin(loop);
+            requestAnimationFrame(animate);
+            renderer.render(scene, camera);
+         }
+         animate();
+		</script>
+	</body>
+</html>
