@@ -19,5 +19,5 @@ c) x = 0.375 * 7 = 2, y = 0.25 * 7 = 1, at (2,1) the color is white. x and y are
 2) Cube2(far-left): This cube used the three.js built in texture functionality and included a normal map.  
 3) Cube3(front-center): This cube used the three.js built in texture functionality and included a normal map.  
 4) Cube4(rear-center): This cube used the three.js built in texture functionality and included a normal map.
-5) Cube5(mid-top): This cube used a texture loaded with shaders.
-6) Cube6(top): This cube was tiled on a 2x2 grid by using a texture loaded with shaders and by using the mod() function for repeats.  
+5) Cube5(upper-mid): This cube used a texture loaded with shaders.
+6) Cube6(upper): This cube was tiled on a 2x2 grid by using a texture loaded with shaders and by using the mod() function for repeats.  
