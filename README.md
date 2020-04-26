@@ -11,4 +11,4 @@ Part 2 video - https://drive.google.com/open?id=17i05UqYnq_LX3iHGPRiol5rIfp_AQY6
 ## Lab 4
 Part 2 video - https://drive.google.com/open?id=14SnlCz3njNCZJP4UKDlMTQ20dvvKFUPQ
 - Answers to 24  
-..a) Assuming we do not consider upsampling or downsampling, x=uw is the value of the pixel to sample from the given 8x8 texture.
+a) Assuming we do not consider upsampling or downsampling, x=uw is the value of the pixel to sample from the given 8x8 texture.
