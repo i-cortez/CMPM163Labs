@@ -14,10 +14,10 @@ Part 2 video - https://drive.google.com/open?id=14SnlCz3njNCZJP4UKDlMTQ20dvvKFUP
 a) Assuming we do not consider upsampling or downsampling, x=uw is the value of the pixel to sample from the given 8x8 texture.  
 b) Similar to (a) y=vh  
 c) x = 0.375 * 7 = 2, y = 0.25 * 7 = 1, at (2,1) the color is white. x and y are truncated values.  
-- How each cube was created
-Cube1(far-right): This cube used the three.js built in texture functionality.  
-Cube2(far-left): This cube used the three.js built in texture functionality and included a normal map.  
-Cube3(front-center): This cube used the three.js built in texture functionality and included a normal map.  
-Cube4(rear-center): This cube used the three.js built in texture functionality and included a normal map.
-Cube5(mid-top): This cube used a texture loaded with shaders.
-Cube6(top): This cube was tiled on a 2x2 grid by using a texture loaded with shaders and by using the mod() function for repeats.
+- How each cube was created  
+1) Cube1(far-right): This cube used the three.js built in texture functionality.  
+2) Cube2(far-left): This cube used the three.js built in texture functionality and included a normal map.  
+3) Cube3(front-center): This cube used the three.js built in texture functionality and included a normal map.  
+4) Cube4(rear-center): This cube used the three.js built in texture functionality and included a normal map.
+5) Cube5(mid-top): This cube used a texture loaded with shaders.
+6) Cube6(top): This cube was tiled on a 2x2 grid by using a texture loaded with shaders and by using the mod() function for repeats.  
