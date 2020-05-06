@@ -21,3 +21,7 @@ c) x = 0.375 * 7 = 2, y = 0.25 * 7 = 1, at (2,1) the color is white. x and y are
 4) Cube4(rear-center): This cube used the three.js built in texture functionality and included a normal map.
 5) Cube5(upper-mid): This cube used a texture loaded with shaders.
 6) Cube6(upper): This cube was tiled on a 2x2 grid by using a texture loaded with shaders and by using the mod() function for repeats.  
+## Lab 5
+Video - https://drive.google.com/open?id=12YYdB106kj6O6d2vEqpMmPssHbjTWjUJ  
+Play the game - https://connect.unity.com/mg/karting/cart-racer-16000  
+I created a new material and applied it to two different crystal clusters in the game. I did this by modifying an existing material provided in the microgame. You will see this new material applied to the glowing purple and glowing blue crystal clusters. I also played around with different prefabs and modified their locations. I also added in more cool particle systems!
