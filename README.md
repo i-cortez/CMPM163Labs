@@ -24,4 +24,5 @@ c) x = 0.375 * 7 = 2, y = 0.25 * 7 = 1, at (2,1) the color is white. x and y are
 ## Lab 5
 Video - https://drive.google.com/open?id=12YYdB106kj6O6d2vEqpMmPssHbjTWjUJ  
 Play the game - https://connect.unity.com/mg/karting/cart-racer-16000  
+UPDATE 5/7 - Forgot to provide project files with original submission. See them here: https://github.com/i-cortez/UnityProjects
 I created a new material and applied it to two different crystal clusters in the game. I did this by modifying an existing material provided in the microgame. You will see this new material applied to the glowing purple and glowing blue crystal clusters. I also played around with different prefabs and modified their locations. I built a larger track for more playtime! I also added in more cool particle systems!
