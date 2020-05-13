@@ -31,4 +31,6 @@ The scene contains a spotlight, a directional light, a point light, and an area 
 To create the Floor Material in my unity project, I created a new material from the Assets menu. I kept the standard shader and downloaded a texture and its normal map. With these textures, I populated the Albedo, Metallic, Normal Map, and Height map to create the realistic material.  
 I downloaded a 3D robot object, a 3D car object, and their respective textures and normal maps from the web and added it to the scene as explained in the tutorials.  
 I downloaded a starry night HDRI skybox from the web, created a new material with it, and added it to the Unity scene as explained in the tutorials.  
-![](images/working_from_home.jpg)
+![](images/hardwood.jpg)  
+![](images/floor_material.jpg)  
+![](images/driving_cars.jpg)
