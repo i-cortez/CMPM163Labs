@@ -38,6 +38,6 @@ I downloaded a starry night HDRI skybox from the web, created a new material wit
 ## Lab 7
 ![](images/texture_map.jpg)
 ![](images/height_map.jpg)
-Part B Video - https://drive.google.com/open?id=1Fso_JZBBd5iXT2ZyvR_U0Hg5qXCtojZ_    
+Part B Video - https://drive.google.com/open?id=1Fso_JZBBd5iXT2ZyvR_U0Hg5qXCtojZ  
 Part C Video - https://drive.google.com/open?id=1Y2xqJ10flSCi4wTeQSN8PaHqKv5TvOiy  
 I apologize for not being able to answer the questions. My partner needed more time to finish.
