@@ -24,4 +24,14 @@ c) x = 0.375 * 7 = 2, y = 0.25 * 7 = 1, at (2,1) the color is white. x and y are
 ## Lab 5
 Video - https://drive.google.com/open?id=12YYdB106kj6O6d2vEqpMmPssHbjTWjUJ  
 Play the game - https://connect.unity.com/mg/karting/cart-racer-16000  
+UPDATE 5/7 - Forgot to provide project files with original submission. See them here: https://github.com/i-cortez/UnityProjects  
 I created a new material and applied it to two different crystal clusters in the game. I did this by modifying an existing material provided in the microgame. You will see this new material applied to the glowing purple and glowing blue crystal clusters. I also played around with different prefabs and modified their locations. I built a larger track for more playtime! I also added in more cool particle systems!
+## Lab 6
+See the project files here: https://github.com/i-cortez/UnityProjects  
+The scene contains a spotlight, a directional light, a point light, and an area light. The The spotlight is located on top of the 3D car object, the directional light points and casts shadows in the Z direction, the point light illuminates the space just behind the 3D robot object, and the area light illuminates the rear end of the 3D car object.  
+To create the Floor Material in my unity project, I created a new material from the Assets menu. I kept the standard shader and downloaded a texture and its normal map. With these textures, I populated the Albedo, Metallic, Normal Map, and Height map to create the realistic material.  
+I downloaded a 3D robot object, a 3D car object, and their respective textures and normal maps from the web and added it to the scene as explained in the tutorials.  
+I downloaded a starry night HDRI skybox from the web, created a new material with it, and added it to the Unity scene as explained in the tutorials.  
+![](images/hardwood.jpg)  
+![](images/floor_material.jpg)  
+![](images/driving_cars.jpg)
