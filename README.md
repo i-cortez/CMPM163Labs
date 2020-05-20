@@ -37,6 +37,7 @@ I downloaded a starry night HDRI skybox from the web, created a new material wit
 ![](images/driving_cars.jpg)
 ## Lab 7
 ![](images/texture_map.jpg)
+![](images/height_map.jpg)
 Part B Video - https://drive.google.com/open?id=1o08J2T6LGW9T_Aq8qXCNpbJRxpx0yj7_  
 Part C Video - https://drive.google.com/open?id=1Y2xqJ10flSCi4wTeQSN8PaHqKv5TvOiy  
 I apologize for not being able to answer the questions. My partner needed more time to finish.
