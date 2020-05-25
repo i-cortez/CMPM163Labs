@@ -1,0 +1,330 @@
+<!--
+   pcg.html
+   Ismael Cortez (ijcortez@ucsc)
+   Dated 5-21-2020
+   Lab 8: Three.js Procedural City Generation
+   Some code adapted from:
+      http://learningthreejs.com/
+-->
+<!DOCTYPE html>
+<html>
+	<head>
+      <meta charset="utf-8">
+		<title>Lab 8: Procedural Generation</title>
+		<style>
+			body { margin: 0; }
+			canvas { display: block; }
+		</style>
+	</head>
+	<body>
+      <script type="text/javascript"></script>
+      <script src="../three.js-master/build/three.js"></script>
+      <script src="../three.js-master/examples/js/controls/OrbitControls.js">
+      </script>
+      <script type="x-shader/x-vertex" id="vertexShader">
+         varying vec2 vUv;
+         void main()
+         {
+            vUv = uv;
+            vec4 modelViewPosition = modelViewMatrix * vec4(position, 1.0);
+            gl_Position = projectionMatrix * modelViewPosition;
+         }
+      </script>
+      <script type="x-shader/x-fragment" id="fragmentShader">
+         uniform sampler2D texture4;
+         varying vec2 vUv;
+         void main()
+         {
+            gl_FragColor = texture2D(texture4, vUv);
+         }
+      </script>
+		<script>
+         //---------------------------------------------------------------------
+         // SCENE
+         //---------------------------------------------------------------------
+      	var scene = new THREE.Scene();
+         var camera = new THREE.PerspectiveCamera
+         (
+            75, // vertical FOV
+            window.innerWidth/window.innerHeight, // aspect ratio
+            0.1, // near clipping plane
+            1000 // far clipping plane
+         );
+      	var renderer = new THREE.WebGLRenderer
+         (
+            {
+               antialias: true
+            }
+         );
+      	renderer.setSize(window.innerWidth, window.innerHeight);
+      	document.body.appendChild(renderer.domElement);
+			camera.position.z = 10;
+			camera.position.y = 3;
+			camera.lookAt(0,0,0);
+
+         // orbit controls
+         var controls = new THREE.OrbitControls(camera, renderer.domElement);
+         controls.addEventListener('change', renderer);
+         controls.minDistance = 10;
+         controls.maxDistance = 200;
+         //---------------------------------------------------------------------
+         // AXES
+         //---------------------------------------------------------------------
+         //
+         // Show axes in the window
+         //var axes = new THREE.AxesHelper(50);
+         //scene.add(axes);
+         //---------------------------------------------------------------------
+         // MATERIAL
+         //---------------------------------------------------------------------
+			// plane material
+         const mat = new THREE.MeshPhongMaterial
+         (
+            {
+               color: 0x4f4f4f, 
+               shininess: 100, 
+               side: THREE.DoubleSide
+            }
+         );
+
+         // building material
+         
+
+        var building_material = new THREE.MeshPhongMaterial
+         (
+            {
+               color:0x00c080
+            }
+         ); 
+
+         // sand material
+         var sand_texture = new THREE.TextureLoader().load
+         (
+            'Textures/sand.jpg'
+         );
+         
+         var sand_material = new THREE.MeshLambertMaterial
+         (
+            {
+               map: sand_texture, 
+            }
+         );
+
+         const water_material = new THREE.MeshPhongMaterial
+         (
+            {
+               color: 0x2288ff, 
+               shininess: 100, 
+               side: THREE.DoubleSide
+            }
+         );
+
+         // skybox materials
+         var materialArray = [];
+         // front
+         var front_tex = new THREE.TextureLoader().load
+         (
+            'skybox_textures/Front_Tex.png'
+         );
+         // back
+         var back_tex = new THREE.TextureLoader().load
+         (
+            'skybox_textures/Back_Tex.png'
+         );
+         // up
+         var up_tex = new THREE.TextureLoader().load
+         (
+            'skybox_textures/Up_Tex.png'
+         );
+         // down
+         var down_tex = new THREE.TextureLoader().load
+         (
+            'skybox_textures/Down_Tex.png'
+         );
+         // right
+         var right_tex = new THREE.TextureLoader().load
+         (
+            'skybox_textures/Right_Tex.png'
+         );
+         // left
+         var left_tex = new THREE.TextureLoader().load
+         (
+            'skybox_textures/Left_Tex.png'
+         );
+         materialArray.push(new THREE.MeshBasicMaterial({map: front_tex}));
+         materialArray.push(new THREE.MeshBasicMaterial({map: back_tex}));
+         materialArray.push(new THREE.MeshBasicMaterial({map: up_tex}));
+         materialArray.push(new THREE.MeshBasicMaterial({map: down_tex}));
+         materialArray.push(new THREE.MeshBasicMaterial({map: right_tex}));
+         materialArray.push(new THREE.MeshBasicMaterial({map: left_tex}));
+         for(let i = 0; i < 6; i++) materialArray[i].side = THREE.BackSide;
+         //---------------------------------------------------------------------
+         // GEOMETRY
+         //---------------------------------------------------------------------
+         //
+         // plane geometry
+         var planeSize = 100;
+			var p = new THREE.PlaneGeometry(planeSize, planeSize, 100, 100);
+
+         // building geometry
+         // code adapted from:
+         // http://learningthreejs.com
+         var building_geometry = new THREE.BoxGeometry();
+
+         // sand geometry
+         var sand_geometry = new THREE.PlaneGeometry
+         (
+            planeSize, 
+            planeSize / 8
+         );
+
+         // water geometry
+         var water_geometry = new THREE.PlaneGeometry
+         (
+            planeSize / 2, 
+            planeSize, 
+            100, 
+            100
+         );
+         // skybox geometry
+         var skybox_geometry = new THREE.BoxGeometry(800, 800, 800);
+         //---------------------------------------------------------------------
+         // MESH
+         //---------------------------------------------------------------------
+         //
+         // plane mesh
+         var plane = new THREE.Mesh(p, mat);
+         var planeCenter = new THREE.Vector3
+         (
+            0, 
+            -parseInt(planeSize/4), 
+            -planeSize/2
+         );
+			plane.position.z = planeCenter.z;
+			plane.position.y = planeCenter.y;
+			plane.rotation.x = Math.PI/2;
+			scene.add(plane);
+
+         // building meshes
+         for(var r = -planeSize/2; r < planeSize/2; ++r)
+         {
+            for(var c = -planeSize/2; c < planeSize/2; ++c)
+            {
+               var building = new THREE.Mesh
+               (
+                  building_geometry, 
+                  building_material
+               );
+               building.scale.x = 0.7;
+               // cube.scale.y = noiseData[c + (planeSize / 2)] / 10;
+               building.scale.y = Math.random() * Math.random() * 20;
+               building.scale.z = 0.7;
+               building.position.z = planeCenter.z + c + building.scale.z / 2;
+               building.position.x = r + building.scale.x / 2;
+               building.position.y = planeCenter.y + building.scale.y / 2;
+               scene.add(building);
+            }
+         }
+
+         // sand mesh
+         var sand = new THREE.Mesh(sand_geometry, sand_material);
+         sand.rotation.x = -0.5 * Math.PI;
+         sand.position.x = 0;
+         sand.position.y = -planeSize / 4;
+         sand.position.z = planeSize / 16;
+         scene.add(sand);
+
+         // skybox mesh
+         var skybox = new THREE.Mesh(skybox_geometry, materialArray);
+         scene.add(skybox);
+
+         // water mesh
+         var water = new THREE.Mesh(water_geometry, water_material);
+         water.rotation.x = -0.5 * Math.PI;
+         water.rotation.y = 0;
+         water.rotation.z = -0.5 * Math.PI;
+         water.position.x = 0;
+         water.position.y = -planeSize / 4;
+         water.position.z = planeSize / 2.7;
+         scene.add(water);
+         //---------------------------------------------------------------------
+         // LIGHTS
+         //---------------------------------------------------------------------
+			// add the lights all around the city
+			for(var a = 270; a < 270 * 2; a+=100)
+         {
+            var light = new THREE.PointLight(0xffffff, 1, planeSize * 1.5);
+				light.position.set
+            (
+               planeSize * Math.cos(THREE.MathUtils.degToRad(a)),
+					planeCenter.y + planeSize/2,
+					planeCenter.z + planeSize * Math.sin(THREE.MathUtils.degToRad(a))
+            );
+            scene.add(light);
+			}
+         
+         //---------------------------------------------------------------------
+         // SHADER
+         //---------------------------------------------------------------------
+         var water_shader;
+         water_material.onBeforeCompile = (shader) => 
+         {
+            shader.uniforms.time = { value: 0}
+            shader.vertexShader = 
+            ` 
+               uniform float time; 
+            ` + shader.vertexShader
+            
+            const token = '#include <begin_vertex>'
+            const customTransform = 
+            ` 
+               vec3 transformed = vec3(position);
+               float freq = 3.0;
+               float amp = 0.1;
+               float angle = (time + position.x)*freq;
+               transformed.z += sin(angle)*amp;
+               objectNormal = normalize
+               (
+                  vec3
+                  (
+                     -amp * freq * cos(angle), 
+                     0.0, 
+                     1.0
+                  )
+               );
+               vNormal = normalMatrix * objectNormal;
+            `
+            shader.vertexShader = shader.vertexShader.replace
+            (
+               token, 
+               customTransform
+            )
+            water_shader = shader
+         }
+         //---------------------------------------------------------------------
+         //---------------------------------------------------------------------
+         //
+         function animate(time)
+         {
+            requestAnimationFrame(animate);
+				renderer.render(scene, camera);
+            if(water_shader)
+            {
+               water_shader.uniforms.time.value = time/800;
+            }
+			}
+
+         animate();
+         // screen resize function
+         // Adapted from: https://github.com/josdirksen/learning-threejs/
+         function onResize()
+         {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+         }
+         window.addEventListener('resize', onResize, false);
+      </script>
+   </body>
+</html>
+
