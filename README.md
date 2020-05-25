@@ -45,7 +45,7 @@ I apologize for not being able to answer the questions. My partner needed more t
 ## Lab 8
 My inspiration came from a photo of the Seattle skyline at night. It inspired me to create  
 a nighttime city next to the ocean with sand and moving water waves.  
-Partner portion:
+Partner portion:  
 My partner added water to their scene to make the city look like Venice. The spacing between their buildings  
 was randomized so that some buildings would be right next to each other while other buildings would be far  
 apart to make room for canals. Some models were grouped together in ways that made sense. For instance, a  
