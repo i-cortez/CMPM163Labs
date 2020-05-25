@@ -42,3 +42,14 @@ Part B Video - https://drive.google.com/open?id=1Fso_JZBBd5iXT2ZyvR_U0Hg5qXCtojZ
 Part C Video - https://drive.google.com/open?id=1Y2xqJ10flSCi4wTeQSN8PaHqKv5TvOiy  
 One of the links is not working :( please try here: https://drive.google.com/drive/folders/17e3DXRk6EDCDvHm4hpBUqb7ZC4MWDrOM  
 I apologize for not being able to answer the questions. My partner needed more time to finish.
+## Lab 8
+My inspiration came from a photo of the Seattle skyline at night. It inspired me to create  
+a nighttime city next to the ocean with sand and moving water waves.  
+Partner portion:
+My partner added water to their scene to make the city look like Venice. The spacing between their buildings  
+was randomized so that some buildings would be right next to each other while other buildings would be far  
+apart to make room for canals. Some models were grouped together in ways that made sense. For instance, a  
+patio with a table, umbrella, and chairs all appear together as one object. Bridges were also placed above water level randomly.  
+I did not help my partner with any portion of their lab.
+![](images/inspiration.jpg)  
+Video - https://drive.google.com/open?id=1ilIayyKKrF1EsJTqseplSd2S4BqXblqT
